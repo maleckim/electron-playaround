@@ -1,0 +1,49 @@
+@-webkit-keyframes slideInFromLeft {
+  0% {
+    transform: translate(0vh, 0vh)
+  }
+
+
+
+  80% {
+    transform: translate(0vh, 30vh)
+  }
+
+  90% {
+    transform: translate(0vh, 33vh)
+  }
+
+  100% {
+    transform: translate(0vh, 31vh)
+  }
+
+
+
+
+}
+
+.container {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  /* animation: 3s ease-out 0s 1 slideInFromLeft; */
+  -webkit-animation: slideInFromLeft 1s ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+  padding: 30px;
+}
+
+.container h2 {
+  font-size: 5rem;
+  margin-bottom: 100px;
+  padding: 10px 25px;
+  color: #FFF;
+  font-weight: 600;
+  text-shadow: 2px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.container a {
+  font-size: 1.4rem;
+  margin-top: 1.4rem;
+}
