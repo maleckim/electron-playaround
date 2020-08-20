@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styles from './Test.css';
+import styles from './ChatBoard.css';
 import routes from '../../constants/routes.json';
 
 export default function Test() {
   const [messages, addMessage] = useState<Array<string>>([
     'Welcome to the Chat',
   ]);
+  const [text, updateText] = useState<string>();
 
   // eslint-disable-next-line
   const input: any = React.createRef();
+  // eslint-disable-next-line
+  let self: any = React.createRef();
 
   const ws = new WebSocket('ws://dirtdood.herokuapp.com:80');
   ws.addEventListener('message', (event) => {
@@ -23,7 +26,8 @@ export default function Test() {
   const sendMessage = (event: React.FormEvent): void | boolean => {
     event.preventDefault();
     if (ws.readyState === WebSocket.OPEN) {
-      return ws.send(input.current.value);
+      ws.send(input.current.value);
+      return event.currentTarget.reset();
     }
     return false;
   };
@@ -38,7 +42,7 @@ export default function Test() {
       ))}
       <div className={styles.chatText}>
         <form onSubmit={(e: React.FormEvent) => sendMessage(e)}>
-          <input type="text" ref={input} />
+          <input id="chat-text" type="text" ref={input} />
           <input type="submit" value="Send" />
         </form>
       </div>
