@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 import TestChat from './TestChat';
+import Login from './Login';
 import { Link } from 'react-router-dom';
 import styles from './ChatBoard.css';
 import routes from '../../constants/routes.json';
@@ -13,6 +14,7 @@ export default function Test() {
   const [messages, addMessage] = useState<Array<string>>([]);
   const [offers, recentOffer] = useState([]);
   const [current, changeCurrent] = useState();
+  const [user, currentUser] = useState();
   // eslint-disable-next-line
 
   const webSocket = useRef(null);
@@ -21,7 +23,6 @@ export default function Test() {
   useEffect(() => {
     webSocket.current = new WebSocket('ws://localhost:9000');
     webSocket.current.onmessage = (message) => {
-      console.log(message);
       const data = JSON.parse(message.data);
       addMessage((prev) => [...prev, data.message]);
       recentOffer((prev) => [...prev, data.offer]);
@@ -35,16 +36,22 @@ export default function Test() {
     recentOffer((prev) => [...prev, message]);
     webSocket.current.send(message);
   };
+
+  const attemptLogin = (data) => {
+    currentUser(data);
+    webSocket.current.send(JSON.stringify({ type: 'login', name: `${data}` }));
+  };
   return (
     <>
       <Link to={routes.HOME}>
         <i className="fa fa-arrow-left fa-3x" />
       </Link>
+      <Login login={attemptLogin} />
       <div className="text-box">
         <TestChat messages={offers} />
       </div>
       <div className={styles.chatText}>
-        <form onSubmit={() => sendMessage(current)}>
+        <form onSubmit={() => sendMessage(`${user}: ${current}`)}>
           <input
             id="chat-text"
             type="text"

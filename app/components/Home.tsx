@@ -7,7 +7,7 @@ export default function Home(): JSX.Element {
   return (
     <div className={styles.container} data-tid="container">
       <h2>Electron/Websocket Playaround</h2>
-      <Link to={routes.TEST}>follow me...</Link>
+      <Link to={routes.TEST}>woo</Link>
     </div>
   );
 }
