@@ -7,6 +7,10 @@
   text-align: center;
 }
 
+.text-box {
+  overflow-y: auto;
+}
+
 input {
   width: 60vw;
   height: 35px;

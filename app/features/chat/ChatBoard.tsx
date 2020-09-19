@@ -1,48 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
+import TestChat from './TestChat';
 import { Link } from 'react-router-dom';
 import styles from './ChatBoard.css';
 import routes from '../../constants/routes.json';
 
+const configuration = {
+  iceServers: [{ url: 'stun:stun.1.google.com:19302' }],
+};
+
 export default function Test() {
-  const [messages, addMessage] = useState<Array<string>>([
-    'Welcome to the Chat',
-  ]);
-  const [text, updateText] = useState<string>();
-
+  const [messages, addMessage] = useState<Array<string>>([]);
+  const [offers, recentOffer] = useState([]);
+  const [current, changeCurrent] = useState();
   // eslint-disable-next-line
-  const input: any = React.createRef();
-  // eslint-disable-next-line
-  let self: any = React.createRef();
 
-  const ws = new WebSocket('ws://dirtdood.herokuapp.com:80');
-  ws.addEventListener('message', (event) => {
-    event.stopImmediatePropagation();
-    const { data } = event;
-    // const parsedData = JSON.parse(data);
-    addMessage([...messages, data]);
-  });
+  const webSocket = useRef(null);
+  // const ws = new WebSocket('ws://dirtdood.herokuapp.com:80');
+  // {"type":"login","name","fartbutt"}
+  useEffect(() => {
+    webSocket.current = new WebSocket('ws://localhost:9000');
+    webSocket.current.onmessage = (message) => {
+      console.log(message);
+      const data = JSON.parse(message.data);
+      addMessage((prev) => [...prev, data.message]);
+      recentOffer((prev) => [...prev, data.offer]);
+    };
+    webSocket.current.onclose = () => {
+      webSocket.current.close();
+    };
+  }, []);
 
-  const sendMessage = (event: React.FormEvent): void | boolean => {
-    event.preventDefault();
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send(input.current.value);
-      return event.currentTarget.reset();
-    }
-    return false;
+  const sendMessage = (message) => {
+    recentOffer((prev) => [...prev, message]);
+    webSocket.current.send(message);
   };
-
   return (
     <>
       <Link to={routes.HOME}>
         <i className="fa fa-arrow-left fa-3x" />
       </Link>
-      {messages.map((a, i) => (
-        <p key={i || Math.random()}>{`Admin: ${a}`}</p>
-      ))}
+      <div className="text-box">
+        <TestChat messages={offers} />
+      </div>
       <div className={styles.chatText}>
-        <form onSubmit={(e: React.FormEvent) => sendMessage(e)}>
-          <input id="chat-text" type="text" ref={input} />
+        <form onSubmit={() => sendMessage(current)}>
+          <input
+            id="chat-text"
+            type="text"
+            onChange={(e) => changeCurrent(e.target.value)}
+          />
           <input type="submit" value="Send" />
         </form>
       </div>

@@ -6,7 +6,7 @@ import styles from './Home.css';
 export default function Home(): JSX.Element {
   return (
     <div className={styles.container} data-tid="container">
-      <h2>Friendship Quarters</h2>
+      <h2>Electron/Websocket Playaround</h2>
       <Link to={routes.TEST}>follow me...</Link>
     </div>
   );
