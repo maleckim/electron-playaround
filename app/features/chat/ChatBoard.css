@@ -65,3 +65,11 @@ input[type="text"]:focus {
 *:focus {
   outline: none;
 }
+
+.login {
+  display: inline;
+}
+
+.login input[type="text"] {
+  width: 10vw;
+}

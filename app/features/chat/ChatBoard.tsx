@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
-import TestChat from './TestChat';
-import Login from './Login';
 import { Link } from 'react-router-dom';
+import Login from './Login';
+import TestChat from './TestChat';
 import styles from './ChatBoard.css';
 import routes from '../../constants/routes.json';
 
@@ -19,7 +19,7 @@ export default function Test() {
 
   const webSocket = useRef(null);
   // const ws = new WebSocket('ws://dirtdood.herokuapp.com:80');
-  // {"type":"login","name","fartbutt"}
+  // {"type":"login","name",""}
   useEffect(() => {
     webSocket.current = new WebSocket('ws://localhost:9000');
     webSocket.current.onmessage = (message) => {

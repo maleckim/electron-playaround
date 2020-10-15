@@ -6,7 +6,7 @@ export default function Login(props) {
   const [user, updateInfo] = useState('');
 
   return (
-    <>
+    <div className="login">
       <button
         type="button"
         onFocus={() => changeLoginStatus(!status)}
@@ -26,6 +26,6 @@ export default function Login(props) {
       >
         enter
       </button>
-    </>
+    </div>
   );
 }
